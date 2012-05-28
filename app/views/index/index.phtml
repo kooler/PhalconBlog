@@ -1,4 +1,52 @@
-<h1>Super fast blog</h1>
-<?php foreach ($posts as $post) :?>
-	<div><?php print $post->name;?></div>
-<?php endforeach;?>
+<html>
+<head>
+	<title>Super blog</title>
+</head>
+<body>
+	<h1>Super blog</h1>
+
+	<div style="float:right; width: 200px">
+		<div>
+			<h3>Random posts</h3>
+			<?php foreach($randomPosts as $item): ?>
+				<div><?=Phalcon_Tag::linkTo("post/?id=".$item->id, $item->name) ?> (<?php print count($item->getComment());?>)</div>
+			<?php endforeach;?>
+		</div>
+		<div>
+			<h3>Last posts</h3>
+			<?php foreach($topPosts as $item): ?>
+				<div><?=Phalcon_Tag::linkTo("post/?id=".$item->id, $item->name) ?> (<?php print count($item->getComment());?>)</div>
+			<?php endforeach;?>
+		</div>
+		<div>
+			<h3>Random comments</h3>
+			<?php foreach($randomComments as $item): ?>
+				<div><?=Phalcon_Tag::linkTo("post/?id=".$item->getPost()->id, $item->getPost()->name) ?> -> <?php print $item->body;?></div>
+			<?php endforeach;?>
+		</div>
+		<div>
+			<h3>Last comments</h3>
+			<?php foreach($lastComments as $item): ?>
+				<div><?=Phalcon_Tag::linkTo("post/?id=".$item->getPost()->id, $item->getPost()->name) ?> -> <?php print $item->body;?></div>
+			<?php endforeach;?>
+		</div>
+	</div>
+
+	<div>
+		<?php foreach($posts->items as $item): ?>
+			<h3><?=Phalcon_Tag::linkTo("post/?id=".$item->id, $item->name) ?></h3>
+			<div><?php echo $item->body ?></div>  
+			<div><?php print count($item->getComment());?> comments</div>
+		<?php endforeach; ?>
+
+		<div style="text-align:center">
+			<?php if ($posts->current > 1):?>
+				<?=Phalcon_Tag::linkTo("?page=".$posts->before, "Previous") ?>
+			<?php endif;?>
+			<?=Phalcon_Tag::linkTo("?page=".$posts->next, "Next") ?>
+			 
+			<?php echo "You are in page ", $posts->current, " of ", $posts->total_pages ?>
+		</div>
+	</div>
+</body>
+</html>

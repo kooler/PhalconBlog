@@ -1,0 +1,18 @@
+<html>
+<head>
+	<title>Super blog</title>
+</head>
+<body>
+	<h1><?php print $post->name;?></h1>
+	<div><?php print $post->body;?></div>
+	<h2>Comments</h2>
+	<form method="POST" action="/post/addcomment">
+		<textarea name="body" style="width:100%;height:50px;border:1px solid grey;"></textarea>
+		<input type="hidden" name="post" value="<?php print $post->id;?>">
+		<input type="submit" value="Comment">
+	</form>
+	<?php foreach ($post->getComment() as $comment):?>
+		<div style="padding:10px;margin:10px;border:1px solid green"><?php print $comment->body;?></div>
+	<?php endforeach;?>
+</body>
+</html>

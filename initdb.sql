@@ -4,3 +4,10 @@ CREATE TABLE  `posts` (
 	`body` TEXT NOT NULL ,
 	`created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+CREATE TABLE  `comments` (
+	`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+	`body` TEXT NOT NULL ,
+	`post_id` int(10) NOT NULL,
+	KEY `post_id` (`post_id`)
+) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
