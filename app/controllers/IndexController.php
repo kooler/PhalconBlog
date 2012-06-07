@@ -47,4 +47,18 @@ class IndexController extends Phalcon_Controller {
 		}
 	}
 
+	public function sitemapAction() {
+		$posts = Post::find(array("order" => "created DESC"));
+		$baseUrl = 'http://'.$_SERVER['HTTP_HOST'].'/';
+		//List pages
+		$pagesNumber = ceil(count($posts)/10);
+		for ($i = 1; $i < $pagesNumber; $i++) {
+			echo $baseUrl.'?page='.$i."\n";
+		}
+		//Post pages
+		foreach ($posts as $post) {
+			echo $baseUrl.'post/?id='.$post->id."\n";
+		}
+	}
+
 }
