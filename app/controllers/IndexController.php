@@ -3,14 +3,13 @@
 class IndexController extends Phalcon_Controller {
 
 	public function indexAction(){
-		//Create a cache that caches from the "Output" to a "File" backend
+		$memcache = new Memcache;
+		$memcache->connect('localhost', 11211);
 
-		$cache = Phalcon_Cache::factory("Data", "File", array("lifetime" => 172800), array("cacheDir" => "../app/cache"));
-
-		$posts = $cache->get('posts');
+		$posts = $memcache->get('posts');
 		if ($posts == null) {
 			$posts = Post::find(array("order" => "created DESC"));
-			$cache->save('posts', $posts);
+			$memcache->set('posts', $posts);
 		}
 
 		$page = (int) $_GET["page"];
