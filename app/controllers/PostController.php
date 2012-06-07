@@ -3,7 +3,7 @@
 class PostController extends Phalcon_Controller {
 	public function indexAction() {
 		//Create a cache that caches from the "Output" to a "File" backend
-		$cache = Phalcon_Cache::factory("Output", "File", array("lifetime" => 172800), array("cacheDir" => "../app/cache/"));
+		$cache = Phalcon_Cache::factory("Data", "File", array("lifetime" => 172800), array("cacheDir" => "../app/cache"));
 
 		$id = (int) $_GET["id"];
 
