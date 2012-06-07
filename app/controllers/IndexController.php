@@ -3,11 +3,20 @@
 class IndexController extends Phalcon_Controller {
 
 	public function indexAction(){
+		//Create a cache that caches from the "Output" to a "File" backend
+		$cache = Phalcon_Cache::factory("Output", "File", array("lifetime" => 172800), array("cacheDir" => "../app/cache/"));
+
+		$posts = $cache->get('posts');
+		if ($posts == null) {
+			$posts = Post::find(array("order" => "created DESC"));
+			$cache->save('posts', $posts);
+		}
+
 		$page = (int) $_GET["page"];
 
 		//Create a model paginator, show 10 rows by page starting from $numberPage
 		$paginator = Phalcon_Paginator::factory("Model", array(
-		  "data" => Post::find(array("order" => "created DESC")),
+		  "data" => $posts,
 		  "limit"=> 10,
 		  "page" => $page == 0 ? 1 : $page
 		));

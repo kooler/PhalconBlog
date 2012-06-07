@@ -2,9 +2,18 @@
 
 class PostController extends Phalcon_Controller {
 	public function indexAction() {
+		//Create a cache that caches from the "Output" to a "File" backend
+		$cache = Phalcon_Cache::factory("Output", "File", array("lifetime" => 172800), array("cacheDir" => "../app/cache/"));
+
 		$id = (int) $_GET["id"];
+
 		if ($id > 0) {
-			$post = Post::findFirst($id);
+			$post = $cache->get('post'.$id);
+			if ($post == null) {
+				$post = Post::findFirst($id);
+				$cache->save('post'.$id, $post);
+			}
+			
 			if ($post) {
 				$this->view->setVar('post', $post);		
 				return;
