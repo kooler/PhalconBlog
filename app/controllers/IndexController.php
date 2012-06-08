@@ -3,20 +3,11 @@
 class IndexController extends Phalcon_Controller {
 
 	public function indexAction(){
-		$memcache = new Memcache;
-		$memcache->connect('localhost', 11211);
-
-		$posts = $memcache->get('posts');
-		if ($posts == null) {
-			$posts = Post::find(array("order" => "created DESC"));
-			$memcache->set('posts', $posts);
-		}
-
 		$page = (int) $_GET["page"];
 
 		//Create a model paginator, show 10 rows by page starting from $numberPage
 		$paginator = Phalcon_Paginator::factory("Model", array(
-		  "data" => $posts,
+		  "data" => Post::find(array("order" => "created DESC")),
 		  "limit"=> 10,
 		  "page" => $page == 0 ? 1 : $page
 		));

@@ -2,17 +2,10 @@
 
 class PostController extends Phalcon_Controller {
 	public function indexAction() {
-		$memcache = new Memcache;
-		$memcache->connect('localhost', 11211);
-
 		$id = (int) $_GET["id"];
 
 		if ($id > 0) {
-			$post = $memcache->get('post'.$id);
-			if ($post == null) {
-				$post = Post::findFirst($id);
-				$memcache->set('post'.$id, $post);
-			}
+			$post = Post::findFirst($id);
 			
 			if ($post) {
 				$this->view->setVar('post', $post);		
